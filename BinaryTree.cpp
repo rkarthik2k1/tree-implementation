@@ -21,7 +21,7 @@ bool BinaryTree::_addNode(int nodeId)
    // as it was added in the ctor
    BTreeNode *pNode = m_ParentQueue.front();
 
-   // Add the new node. First check if we can add it as left child
+   // Add the new node. First check if we can add it as left child.
    // Push this node to the queue
    if (pNode->Left() == nullptr)
    {
@@ -47,6 +47,8 @@ bool BinaryTree::_addNode(int nodeId)
    return bRet;
 }
 
+// Adds a node to left subtree if nodeId <= current node id
+// otherwise to the right subtree
 bool BinaryTree::_addSearchTreeNode(BTreeNode *pParent, int nodeId)
 {
    bool bRet = false;
@@ -82,6 +84,81 @@ bool BinaryTree::_addSearchTreeNode(BTreeNode *pParent, int nodeId)
    return bRet;
 }
 
+// In-order traversal is as follows
+// 1. traverse left subtree
+// 2. visit current node
+// 3. traverse right subtree
+void BinaryTree::_inOrder(BTreeNode *pNode)
+{
+   if (pNode != nullptr)
+   {
+      // Traverse Left
+      if (pNode->Left())
+      {
+         _inOrder(pNode->Left());
+      }
+      
+      // Visit Current node
+      m_FunVisitNode(*pNode);
+
+      // Traverse Right
+      if (pNode->Right())
+      {
+         _inOrder(pNode->Right());
+      }
+   }
+}
+
+// Pre-order traversal is as follows
+// 1. visit current node
+// 2. traverse left subtree
+// 3. traverse right subtree
+void BinaryTree::_preOrder(BTreeNode *pNode)
+{
+   if (pNode != nullptr)
+   {
+      // Visit Current node
+      m_FunVisitNode(*pNode);
+
+      // Traverse Left
+      if (pNode->Left())
+      {
+         _preOrder(pNode->Left());
+      }
+    
+      // Traverse Right
+      if (pNode->Right())
+      {
+         _preOrder(pNode->Right());
+      }
+   }
+}
+
+// Post-order traversal is as follows
+// 1. traverse left subtree
+// 2. traverse right subtree
+// 3. visit current node
+void BinaryTree::_postOrder(BTreeNode *pNode)
+{
+   if (pNode != nullptr)
+   {
+      // Traverse Left
+      if (pNode->Left())
+      {
+         _postOrder(pNode->Left());
+      }
+
+      // Traverse Right
+      if (pNode->Right())
+      {
+         _postOrder(pNode->Right());
+      }
+
+      // Visit Current node
+      m_FunVisitNode(*pNode);
+   }
+}
+
 bool BinaryTree::AddNode(int id)
 {
    bool bRet = false;
@@ -102,6 +179,37 @@ bool BinaryTree::AddNode(int id)
 void BinaryTree::Print()
 {
    _printNode(m_pRoot);
+}
+
+void BinaryTree::Traverse(std::function<void(BTreeNode)> doVisit, e_TraverseOrder order)
+{
+   // If doVisit function is null then simply use lambda expression
+   // to print the node id
+   if (doVisit)
+   {
+      m_FunVisitNode = doVisit;
+   }
+   else
+   {
+      m_FunVisitNode = [](BTreeNode node) 
+      { 
+         cout << node.m_Id << "\n"; 
+      };
+   }
+
+   // Call the appropriate traversal method. Default is in-order
+   switch(order)
+   {
+      case e_TraverseOrder::e_PreOrder:
+         _preOrder(m_pRoot);
+         break;
+      case e_TraverseOrder::e_PostOrder:
+         _postOrder(m_pRoot);
+         break;
+      default:
+         _inOrder(m_pRoot);
+         break;
+   }
 }
 
 BinaryTree::~BinaryTree()

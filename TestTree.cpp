@@ -92,6 +92,11 @@ void TestBinaryTree()
 
 }
 
+void Print(BTreeNode node)
+{
+   cout << "Node: " << node.m_Id << "\n";
+}
+
 // Create a simple binary tree (not a search tree) and run
 // do some operations
 void TestBinarySearchTree()
@@ -106,6 +111,23 @@ void TestBinarySearchTree()
 
    btree.AddNode(3);
    btree.AddNode(40);
+   cout << "*****************************\n";
+   
+   // In-order Traversal - deault traversal order is in order
+   // Visit function is Print() defined above
+   btree.Traverse(Print);
+   cout << "*****************************\n";
+
+   // Pre-order Traversal - deault traversal order is in order
+   // Visit function is Print() defined above
+
+   btree.Traverse(Print, e_TraverseOrder::e_PreOrder);
+   cout << "*****************************\n";
+
+   // Post-order Traversal - deault traversal order is in order
+   // Visit function is Print() defined above
+   btree.Traverse(Print, e_TraverseOrder::e_PostOrder);
+   cout << "*****************************\n";
 }
 
 typedef struct
