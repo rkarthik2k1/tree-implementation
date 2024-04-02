@@ -43,6 +43,8 @@ void GetNodesInLevel(vector<BTreeNode> parentNodes, LEVEL_LIST &levelList)
    }
 }
 
+// Create a simple binary tree (not a search tree) and run
+// do some operations
 void TestBinaryTree()
 {
    // Create a binary tree
@@ -90,6 +92,22 @@ void TestBinaryTree()
 
 }
 
+// Create a simple binary tree (not a search tree) and run
+// do some operations
+void TestBinarySearchTree()
+{
+   // Create a binary tree
+   BinaryTree btree{10, true};
+   btree.AddNode(5);
+   btree.AddNode(2);
+
+   btree.AddNode(20);
+   btree.AddNode(15);
+
+   btree.AddNode(3);
+   btree.AddNode(40);
+}
+
 typedef struct
 {
 	UINT nodeId;
@@ -113,7 +131,8 @@ typedef struct
 }*/
 int main()
 {
-   Test_SimpleTree();
+   TestBinarySearchTree();
+   //Test_SimpleTree();
    //PeformanceTest();
    return 0;
 }

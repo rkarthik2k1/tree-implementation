@@ -61,25 +61,44 @@ public:
 // Binary tree of BTreeNode objects
 class BinaryTree
 {
+////////// Data Members /////////////////////////
    // Pointer to the root of the binary tree
    BTreeNode* m_pRoot{};
 
    // Queue of the parents
    list<BTreeNode*> m_ParentQueue{};
+
+   // Tree size
    int m_Size{};
 
+   // Is this a search tree?
+   bool m_bSearchTree{};
+/////////////////////////////////////////////////
+
+///////// METHODS ///////////////////////////////
    // Print node info
-   void PrintNode(BTreeNode* pNode);
+   void _printNode(BTreeNode* pNode);
+
+   // Add a node w/o forming a search tree
+   bool _addNode(int nodeId);
+
+   // Add a node forming a search tree
+   bool _addSearchTreeNode(BTreeNode* pParent, int nodeId);
+
+/////////////////////////////////////////////////
+
 public:
-   BinaryTree(int rootId)
+   BinaryTree(int rootId, bool bSearchTree=false): m_Size(1), m_bSearchTree(bSearchTree)
    {
       m_pRoot = new BTreeNode(rootId);
-      m_ParentQueue.push_back(m_pRoot);
-      m_Size = 1;
+
+      // We need the queue only if not creating a search tree
+      if (!bSearchTree)
+         m_ParentQueue.push_back(m_pRoot);
    }
 
    // Add node to the next available parent in m_ParentQueue
-   void AddNode(int id);
+   bool AddNode(int id);
 
    // Print the nodes in the tree
    void Print();
@@ -95,4 +114,6 @@ public:
    {
       return (m_Size / 2) - 1;
    }
+
+   ~BinaryTree();
 };
